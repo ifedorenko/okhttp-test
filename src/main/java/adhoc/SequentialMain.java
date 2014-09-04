@@ -15,7 +15,9 @@ import com.squareup.okhttp.Response;
 public class SequentialMain {
 
   // maven-dependencies.lst http://repo.maven.apache.org/maven2/
-  // length 41336013 byte, time 88286 ms, rate 457.23 KiB/s
+  // length 41336013 bytes, time 88286 ms, rate 457.23 KiB/s
+  // length 41336013 bytes, time 118904 ms, rate 339.49 KiB/s
+  // length 41336013 bytes, time 69757 ms, rate 578.68 KiB/s
 
   // maven-dependencies.lst https://repo.maven.apache.org/maven2/
   // length 41336013 bytes, time 80001 ms, rate 504.58 KiB/s

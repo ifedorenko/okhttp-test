@@ -19,6 +19,11 @@ public class AsyncMain {
 
   // maven-dependencies.lst https://repo.maven.apache.org/maven2/
   // length 41302452 bytes, time 76802 ms, rate 525.17 KiB/s
+  
+  // maven-dependencies.lst http://repo.maven.apache.org/maven2/
+  // length 41302452 bytes, time 74148 ms, rate 543.97 KiB/s
+  // length 41302452 bytes, time 123689 ms, rate 326.10 KiB/s
+  // length 41302452 bytes, time 70723 ms, rate 570.32 KiB/s
 
   public static void main(String[] args) throws IOException, InterruptedException {
     Stopwatch stopwatch = Stopwatch.createStarted();
@@ -70,7 +75,7 @@ public class AsyncMain {
         try (InputStream is = response.body().byteStream()) {
           length = ByteStreams.copy(is, ByteStreams.nullOutputStream());
         }
-        System.out.format("%s %d\n", response.request().urlString(), length);
+        System.out.format("%s %s %d\n", response.protocol(), response.request().urlString(), length);
         totalLength.addAndGet(length);
       }
 

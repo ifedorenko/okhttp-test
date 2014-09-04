@@ -18,12 +18,11 @@ import com.squareup.okhttp.Response;
 public class AsyncMain {
 
   // maven-dependencies.lst https://repo.maven.apache.org/maven2/
-  // length 41302452 bytes, time 76802 ms, rate 525.17 KiB/s
-  
+
   // maven-dependencies.lst http://repo.maven.apache.org/maven2/
-  // length 41302452 bytes, time 74148 ms, rate 543.97 KiB/s
-  // length 41302452 bytes, time 123689 ms, rate 326.10 KiB/s
-  // length 41302452 bytes, time 70723 ms, rate 570.32 KiB/s
+  // length 41336013 bytes, time 117579 ms, rate 343.32 KiB/s
+  // length 41336013 bytes, time 71807 ms, rate 562.16 KiB/s
+  // length 41336013 bytes, time 73898 ms, rate 546.26 KiB/s
 
   public static void main(String[] args) throws IOException, InterruptedException {
     Stopwatch stopwatch = Stopwatch.createStarted();
@@ -60,7 +59,7 @@ public class AsyncMain {
   }
 
   private void downloadAsync(OkHttpClient client, final CountDownLatch latch,
-      final AtomicLong totalLength, String url) {
+      final AtomicLong totalLength, final String url) {
     Request request = new Request.Builder() //
         .url(url) //
         .build();
@@ -69,14 +68,20 @@ public class AsyncMain {
 
       @Override
       public void onResponse(Response response) throws IOException {
-        latch.countDown();
+        try {
+          if (!response.isSuccessful()) {
+            throw new IOException(url + " " + response.code() + "/" + response.message());
+          }
 
-        long length;
-        try (InputStream is = response.body().byteStream()) {
-          length = ByteStreams.copy(is, ByteStreams.nullOutputStream());
+          long length;
+          try (InputStream is = response.body().byteStream()) {
+            length = ByteStreams.copy(is, ByteStreams.nullOutputStream());
+          }
+          System.out.format("%s %s %d\n", response.protocol(), url, length);
+          totalLength.addAndGet(length);
+        } finally {
+          latch.countDown();
         }
-        System.out.format("%s %s %d\n", response.protocol(), response.request().urlString(), length);
-        totalLength.addAndGet(length);
       }
 
       @Override

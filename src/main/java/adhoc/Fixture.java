@@ -12,6 +12,7 @@ import com.google.common.io.Files;
 import com.google.common.io.LineProcessor;
 
 public class Fixture {
+  //public static final String BASEURL = "https://central-repo.storage.googleapis.com/";
   public static final String BASEURL = "http://repo.maven.apache.org/maven2/";
 
   public static List<Collection<String>> load(String filename) throws IOException {
